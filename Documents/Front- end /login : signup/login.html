@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSphere - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff2d2d;      /* Red */
+            --secondary: #ff0000;    /* Bright Red */
+            --accent: #ff2d2d;       /* Red Accent */
+            --dark: #0a0a0a;         /* Almost Black */
+            --light: #fff;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0a;
+            background: linear-gradient(135deg, #0a0a0a 70%, #1a0000 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .game-character {
+            position: absolute;
+            bottom: 0;
+            right: 5%;
+            width: 300px;
+            height: 300px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="30" r="20" fill="%23fd79a8"/><circle cx="40" cy="25" r="4" fill="white"/><circle cx="60" cy="25" r="4" fill="white"/><circle cx="40" cy="25" r="2" fill="black"/><circle cx="60" cy="25" r="2" fill="black"/><path d="M45 35 Q50 40 55 35" stroke="black" stroke-width="1" fill="transparent"/><path d="M30 20 L15 10" stroke="%23fd79a8" stroke-width="5" stroke-linecap="round"/><path d="M70 20 L85 10" stroke="%23fd79a8" stroke-width="5" stroke-linecap="round"/><path d="M25 50 L15 70" stroke="%23fd79a8" stroke-width="5" stroke-linecap="round"/><path d="M75 50 L85 70" stroke="%23fd79a8" stroke-width="5" stroke-linecap="round"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+        
+        .binary-rain {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .binary-digit {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.1);
+            font-family: monospace;
+            font-weight: bold;
+            animation: fall linear infinite;
+            user-select: none;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes fall {
+            0% { transform: translateY(-10vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        
+        .form-container {
+            transition: all 0.5s ease;
+            transform-origin: center;
+        }
+        
+        .form-title {
+            background: linear-gradient(to right, #ff2d2d, #fff 60%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 16px #ff2d2d55;
+        }
+        
+        .floating-label {
+            transition: all 0.3s ease;
+            transform-origin: left;
+        }
+        
+        .input-field:focus + .floating-label,
+        .input-field:not(:placeholder-shown) + .floating-label {
+            transform: translateY(-20px) scale(0.8);
+            color: var(--accent);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #ff2d2d 60%, #1a0000 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px #ff2d2d44;
+        }
+        
+        .btn-primary:hover {
+            background: #ff0000;
+            box-shadow: 0 6px 20px #ff2d2d99;
+        }
+        
+        .btn-google {
+            background: white;
+            color: #4285F4;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-google:hover {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-form {
+            color: #ff2d2d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .toggle-form:hover {
+            color: #fff;
+        }
+        
+        .toggle-form::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        
+        .toggle-form:hover::after {
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .game-character {
+                width: 200px;
+                height: 200px;
+                right: 0;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center">
+    <div class="binary-rain" id="binary-container"></div>
+    
+    <div class="game-character"></div>
+    
+    <div class="relative z-10 w-full max-w-md px-6 py-8 mx-4">
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden p-8 form-container">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-2 form-title">TechSphere</h1>
+                <p class="text-gray-300">Join the ultimate gaming experience</p>
+            </div>
+            
+            <div id="login-form">
+                <div class="space-y-6">
+                    <div class="relative">
+                        <input type="email" id="login-email" class="w-full px-4 py-3 bg-white bg-opacity-10 border border-gray-300 border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white input-field" placeholder=" " required>
+                        <label for="login-email" class="absolute left-4 top-3 text-gray-300 pointer-events-none floating-label">Email</label>
+                    </div>
+                    
+                    <div class="relative">
+                        <input type="password" id="login-password" class="w-full px-4 py-3 bg-white bg-opacity-10 border border-gray-300 border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white input-field" placeholder=" " required>
+                        <label for="login-password" class="absolute left-4 top-3 text-gray-300 pointer-events-none floating-label">Password</label>
+                        <div class="text-right mt-1">
+                            <a href="#" class="text-xs text-gray-400 hover:text-purple-400">Forgot password?</a>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-3 px-4 rounded-lg font-medium text-white btn-primary" id="login-btn">
+                        Login
+                    </button>
+                    
+                    <div class="flex items-center my-4">
+                        <div class="flex-1 border-t border-gray-400 border-opacity-30"></div>
+                        <span class="px-4 text-sm text-gray-400">OR</span>
+                        <div class="flex-1 border-t border-gray-400 border-opacity-30"></div>
+                    </div>
+                    
+                    <button class="w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center space-x-2 btn-google" id="google-btn" onclick="window.location.href='google.html'">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik09IDE4YzIuNCAwIDQuNS0uOCA2LTEuMmwtMy0yLjRhNyA3IDAgMCAxLTEuNS0uNmwtMS40LjkzQTYgNiAwIDAgMCA5IDEweiIgZmlsbD0iIzM0QTg1MyIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTMgMTFhNiA2IDAgMCAwIDAtMTFjLS4yLjItLjguMi0xIDAtMS4yLjktMS45IDIuNC0xLjkgNHMuNyAzLjEgMS45IDRoMS4xYy0uMS0uMi0uMy0uNS0uNC0uOEgzYTEuNiAxLjYgMCAwIDEtLjgtMS40eiIgZmlsbD0iI0ZBQ0MwNSIgZmlsbC1ydWxlPSJub256ZXJvIi8+PHBhdGggZD0iTTkgMS44YTIuNCAyLjQgMCAwIDEgMS43LjcgMi44IDIuOCAwIDAgMSAwIDQuMWwtMS40LS45YTIgMiAwIDAgMC0xLjQtLjVjLS44IDAtMS42LjMtMiAuOS0uOS45LS45IDIuNiAwIDMuNWwtMyAyLjRhOC43IDguNyAwIDAgMS0xLjUtNS45YzAtMy4zIDEuOC02LjIgNC43LTcuNXoiIGZpbGw9IiNFRUE2MzYiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvZz48L3N2Zz4=" alt="Google logo" width="20" height="20">
+                        <span>Continue with Google</span>
+                    </button>
+                    
+                    <div class="text-center text-sm text-gray-400 mt-6">
+                        Don't have an account? <span class="font-medium toggle-form" onclick="window.location.href='signup.html'">Sign up</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        
+        const binaryContainer = document.getElementById('binary-container');
+        const chars = '01';
+        
+        function createBinaryDigit() {
+            const digit = document.createElement('div');
+            digit.className = 'binary-digit';
+            digit.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+            digit.style.left = `${Math.random() * 100}%`;
+            digit.style.fontSize = `${Math.random() * 14 + 10}px`;
+            digit.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            digit.style.animationDelay = `${Math.random() * 2}s`;
+            binaryContainer.appendChild(digit);
+            
+            
+            setTimeout(() => {
+                digit.remove();
+            }, 7000);
+        }
+        
+        
+        for (let i = 0; i < 50; i++) {
+            setTimeout(createBinaryDigit, i * 100);
+        }
+        
+        
+        setInterval(() => {
+            createBinaryDigit();
+        }, 300);
+        
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (email && password) {
+                
+                this.textContent = 'Logging in...';
+                setTimeout(() => {
+                    alert('Login successful! Redirecting to dashboard...');
+                    
+                }, 1500);
+            } else {
+                alert('Please fill in both email and password');
+            }
+        });
+
+        // Override alert to use custom black/red popup
+        window.alert = function(message) {
+            // Remove existing custom alert if present
+            const existing = document.getElementById('custom-alert');
+            if (existing) existing.remove();
+
+            const alertDiv = document.createElement('div');
+            alertDiv.id = 'custom-alert';
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '0';
+            alertDiv.style.left = '0';
+            alertDiv.style.width = '100vw';
+            alertDiv.style.height = '100vh';
+            alertDiv.style.background = 'rgba(0,0,0,0.6)';
+            alertDiv.style.display = 'flex';
+            alertDiv.style.alignItems = 'center';
+            alertDiv.style.justifyContent = 'center';
+            alertDiv.style.zIndex = '9999';
+
+            const box = document.createElement('div');
+            box.style.background = '#111';
+            box.style.color = '#ff2d2d';
+            box.style.padding = '2rem 2.5rem';
+            box.style.borderRadius = '1rem';
+            box.style.boxShadow = '0 8px 32px rgba(0,0,0,0.7)';
+            box.style.fontSize = '1.1rem';
+            box.style.fontWeight = 'bold';
+            box.style.textAlign = 'center';
+            box.textContent = message;
+
+            const btn = document.createElement('button');
+            btn.textContent = 'OK';
+            btn.style.marginTop = '1.5rem';
+            btn.style.background = '#ff2d2d';
+            btn.style.color = '#fff';
+            btn.style.border = 'none';
+            btn.style.padding = '0.5rem 1.5rem';
+            btn.style.borderRadius = '0.5rem';
+            btn.style.fontWeight = 'bold';
+            btn.style.cursor = 'pointer';
+            btn.onclick = function() {
+            alertDiv.remove();
+            };
+
+            box.appendChild(document.createElement('br'));
+            box.appendChild(btn);
+            alertDiv.appendChild(box);
+            document.body.appendChild(alertDiv);
+        };
+
+    </script>
+</body>
+</html>

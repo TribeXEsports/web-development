@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSphere - Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff2d2d;
+            --secondary: #ff0000;
+            --accent: #ff2d2d;
+            --dark: #0a0a0a;
+            --light: #fff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 70%, #1a0000 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .game-character {
+            position: absolute;
+            bottom: 0;
+            right: 5%;
+            width: 300px;
+            height: 300px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="10" fill="%2342a5f5"/><circle cx="40" cy="40" r="8" fill="white"/><circle cx="60" cy="40" r="8" fill="white"/><circle cx="40" cy="40" r="4" fill="black"/><circle cx="60" cy="40" r="4" fill="black"/><rect x="35" y="55" width="30" height="10" rx="5" fill="white"/><rect x="15" y="30" width="15" height="5" rx="2.5" fill="%2342a5f5"/><rect x="70" y="30" width="15" height="5" rx="2.5" fill="%2342a5f5"/><rect x="30" y="65" width="15" height="5" rx="2.5" fill="%2342a5f5"/><rect x="55" y="65" width="15" height="5" rx="2.5" fill="%2342a5f5"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: float 6s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .pixel-rain {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .pixel {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 45, 45, 0.18) !important;
+            box-shadow: 0 0 8px #ff2d2d88;
+            animation: fall linear infinite;
+            user-select: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        .form-container {
+            transition: all 0.5s ease;
+            transform-origin: center;
+            box-shadow: 0 0 40px #ff2d2d33, 0 0 0 2px #1a0000;
+            border: 1.5px solid #ff2d2d33;
+        }
+
+        .form-title {
+            background: linear-gradient(to right, #ff2d2d, #fff 60%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 16px #ff2d2d55;
+        }
+
+        .floating-label {
+            transition: all 0.3s ease;
+            transform-origin: left;
+        }
+
+        .input-field:focus + .floating-label,
+        .input-field:not(:placeholder-shown) + .floating-label {
+            transform: translateY(-20px) scale(0.8);
+            color: var(--accent);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #ff2d2d 60%, #1a0000 100%);
+            box-shadow: 0 4px 15px #ff2d2d44;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #ff0000;
+            box-shadow: 0 6px 20px #ff2d2d99;
+            transform: translateY(-3px);
+        }
+
+        .btn-google {
+            background: #fff;
+            color: #ff2d2d;
+            border: 1.5px solid #ff2d2d33;
+            transition: all 0.3s ease;
+        }
+
+        .btn-google:hover {
+            box-shadow: 0 2px 10px #ff2d2d33;
+            color: #fff;
+            background: #ff2d2d;
+        }
+
+        .toggle-form {
+            color: #ff2d2d;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .toggle-form:hover {
+            color: #fff;
+        }
+
+        .toggle-form::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ff2d2d;
+            transition: width 0.3s ease;
+        }
+
+        .toggle-form:hover::after {
+            width: 100%;
+        }
+
+        .text-gray-300, .text-gray-400 {
+            color: #ff2d2d !important;
+        }
+
+        .input-field, label {
+            color-scheme: dark;
+        }
+
+        @media (max-width: 768px) {
+            .game-character {
+                width: 200px;
+                height: 200px;
+                right: 0;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center">
+    <div class="pixel-rain" id="pixel-container"></div>
+
+    <div class="game-character"></div>
+
+    <div class="relative z-10 w-full max-w-md px-6 py-8 mx-4">
+        <div class="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl shadow-2xl overflow-hidden p-8 form-container">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-2 form-title">TechSphere</h1>
+                <p class="text-gray-300">Join the ultimate gaming experience</p>
+            </div>
+
+            <div class="space-y-6" id="signup-form">
+                <div class="relative">
+                    <input type="text" id="signup-username" class="w-full px-4 py-3 bg-white bg-opacity-10 border border-gray-300 border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white input-field" placeholder=" " required>
+                    <label for="signup-username" class="absolute left-4 top-3 text-gray-300 pointer-events-none floating-label">Username</label>
+                </div>
+
+                <div class="relative">
+                    <input type="email" id="signup-email" class="w-full px-4 py-3 bg-white bg-opacity-10 border border-gray-300 border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white input-field" placeholder=" " required>
+                    <label for="signup-email" class="absolute left-4 top-3 text-gray-300 pointer-events-none floating-label">Email</label>
+                </div>
+
+                <div class="relative">
+                    <input type="password" id="signup-password" class="w-full px-4 py-3 bg-white bg-opacity-10 border border-gray-300 border-opacity-20 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white input-field" placeholder=" " required>
+                    <label for="signup-password" class="absolute left-4 top-3 text-gray-300 pointer-events-none floating-label">Password</label>
+                </div>
+
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" class="w-4 h-4 text-purple-500 bg-gray-700 rounded focus:ring-purple-500 focus:ring-2 border-gray-300">
+                    <label for="terms" class="ml-2 text-sm text-gray-300">
+                        I agree to the <a href="#" class="text-purple-400 hover:underline">Terms of Service</a> and <a href="#" class="text-purple-400 hover:underline">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <button class="w-full py-3 px-4 rounded-lg font-medium text-white btn-primary" id="signup-btn">
+                    Create Account
+                </button>
+
+                <div class="flex items-center my-4">
+                    <div class="flex-1 border-t border-gray-400 border-opacity-30"></div>
+                    <span class="px-4 text-sm text-gray-400">OR</span>
+                    <div class="flex-1 border-t border-gray-400 border-opacity-30"></div>
+                </div>
+
+                <button class="w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center space-x-2 btn-google" id="google-btn-signup" onclick="window.location.href='google.html'">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBkPSJNMTcuNiA5LjJsLS4xLTEuOEg5djMuNGg0LjhDMTMuNiAxMiAxMyAxMyAxMiAxMy42djIuMmgzYTguOCA4LjggMCAwIDAgMi42LTYuNnoiIGZpbGw9IiM0Mjg1RjQiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDE4YzIuNCAwIDQuNS0uOCA2LTEuMmwtMy0yLjRhNyA3IDAgMCAxLTEuNS0uNmwtMS40LjkzQTYgNiAwIDAgMCA5IDEweiIgZmlsbD0iIzM0QTg1MyIgZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik0zIDExYTYgNiAwIDAgMCAwLTExYy0uMi4yLS44LjItMSAwLTEuMi45LTEuOSAyLjQtMS45IDRzLjcgMy4xIDEuOSA0aDEuMWMtLjEtLjItLjMtLjUtLjQtLjhIM2ExLjYgMS42IDAgMCAxLS44LTEuNHoiIGZpbGw9IiNGQUNDMDUiIGZpbGwtcnVsZT0ibm9uemVybyIvPjxwYXRoIGQ9Ik05IDEuOGEyLjQgMi40IDAgMCAxIDEuNy43IDIuOCAyLjggMCAwIDEgMCA0LjFsLTEuNC0uOWEyIDIgMCAwIDAtMS40LS41Yy0uOCAwLTEuNi4zLTIgLjktLjkuOS0uOSAyLjYgMCAzLjVsLTMgMi40YTguNyA4LjcgMCAwIDEtMS41LTUuOWMwLTMuMyAxLjgtNi4yIDQuNy03LjV6IiBmaWxsPSIjRUVBNjM2IiBmaWxsLXJ1bGU9Im5vbnplcm8iLz48L2c+PC9zdmc+" alt="Google logo" width="20" height="20">
+                    <span>Continue with Google</span>
+                </button>
+
+                <div class="text-center text-sm text-gray-400 mt-6">
+                    Already have an account? <span class="font-medium toggle-form" onclick="window.location.href='login.html'">Log in</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pixelContainer = document.getElementById('pixel-container');
+
+        function createPixel() {
+            const pixel = document.createElement('div');
+            pixel.className = 'pixel';
+            pixel.style.left = `${Math.random() * 100}%`;
+            pixel.style.opacity = Math.random() * 0.5 + 0.1;
+            pixel.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            pixel.style.animationDelay = `${Math.random() * 2}s`;
+            pixelContainer.appendChild(pixel);
+
+
+            setTimeout(() => {
+                pixel.remove();
+            }, 5000);
+        }
+
+
+        for (let i = 0; i < 100; i++) {
+            setTimeout(createPixel, i * 50);
+        }
+
+
+        setInterval(() => {
+            createPixel();
+        }, 300);
+
+        document.getElementById('signup-btn').addEventListener('click', function() {
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const termsChecked = document.getElementById('terms').checked;
+
+            if (username && email && password && termsChecked) {
+
+                this.textContent = 'Creating account...';
+                setTimeout(() => {
+                    alert('Account created successfully! Redirecting to login...');
+                    window.location.href = 'login.html';
+                }, 1500);
+            } else {
+                alert('Please fill in all fields and agree to the terms');
+            }
+        });
+
+        // Custom alert dialog
+        function customAlert(message) {
+            // Remove existing alert if present
+            const existing = document.getElementById('custom-alert');
+            if (existing) existing.remove();
+
+            const alertDiv = document.createElement('div');
+            alertDiv.id = 'custom-alert';
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '0';
+            alertDiv.style.left = '0';
+            alertDiv.style.width = '100vw';
+            alertDiv.style.height = '100vh';
+            alertDiv.style.background = 'rgba(0,0,0,0.5)';
+            alertDiv.style.display = 'flex';
+            alertDiv.style.alignItems = 'center';
+            alertDiv.style.justifyContent = 'center';
+            alertDiv.style.zIndex = '9999';
+
+            const box = document.createElement('div');
+            box.style.background = '#111';
+            box.style.color = '#ff3b3b';
+            box.style.padding = '2rem 2.5rem';
+            box.style.borderRadius = '1rem';
+            box.style.boxShadow = '0 8px 32px rgba(0,0,0,0.4)';
+            box.style.fontSize = '1.1rem';
+            box.style.textAlign = 'center';
+            box.style.maxWidth = '90vw';
+
+            box.textContent = message;
+
+            const btn = document.createElement('button');
+            btn.textContent = 'OK';
+            btn.style.marginTop = '1.5rem';
+            btn.style.background = '#ff3b3b';
+            btn.style.color = '#fff';
+            btn.style.border = 'none';
+            btn.style.padding = '0.5rem 1.5rem';
+            btn.style.borderRadius = '0.5rem';
+            btn.style.cursor = 'pointer';
+            btn.style.fontWeight = 'bold';
+            btn.onclick = () => alertDiv.remove();
+
+            box.appendChild(document.createElement('br'));
+            box.appendChild(btn);
+            alertDiv.appendChild(box);
+            document.body.appendChild(alertDiv);
+        }
+
+        // Override alert
+        window.alert = customAlert;
+    </script>
+</body>
+</html>
+
