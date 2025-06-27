@@ -1,0 +1,190 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Gaming theme design system */
+
+@layer base {
+  :root {
+    --background: 10 10% 4%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 0 82% 55%;
+    --primary-foreground: 0 0% 95%;
+
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 0 82% 55%;
+    --accent-foreground: 0 0% 95%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 95%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 82% 55%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 0 82% 55%;
+    --sidebar-primary-foreground: 0 0% 95%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 0 82% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-gaming-black text-foreground font-exo;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(255, 30, 30, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(255, 30, 30, 0.03) 0%, transparent 50%),
+      linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(26, 26, 26, 0.9) 50%, rgba(10, 10, 10, 0.8) 100%);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-rajdhani;
+  }
+}
+
+@layer components {
+  .glow-text {
+    text-shadow: 
+      0 0 5px rgba(255, 30, 30, 0.5),
+      0 0 10px rgba(255, 30, 30, 0.3),
+      0 0 20px rgba(255, 30, 30, 0.2);
+  }
+
+  .neon-border {
+    border: 1px solid rgba(255, 30, 30, 0.3);
+    box-shadow: 
+      inset 0 0 10px rgba(255, 30, 30, 0.1),
+      0 0 20px rgba(255, 30, 30, 0.1);
+  }
+
+  .gaming-card {
+    @apply bg-gradient-to-br from-gaming-gray to-gaming-black border border-neon-red/20 rounded-lg;
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 30, 30, 0.1);
+  }
+
+  .tournament-card {
+    @apply gaming-card p-6 hover:border-neon-red/40 transition-all duration-300;
+    backdrop-filter: blur(10px);
+  }
+
+  .tournament-card:hover {
+    box-shadow: 
+      0 8px 40px rgba(0, 0, 0, 0.7),
+      0 0 30px rgba(255, 30, 30, 0.2),
+      inset 0 1px 0 rgba(255, 30, 30, 0.2);
+    transform: translateY(-4px);
+  }
+
+  .cta-button {
+    @apply bg-gradient-to-r from-neon-red to-dark-red text-white font-rajdhani font-bold px-8 py-4 rounded-lg;
+    @apply hover:from-glow-red hover:to-neon-red transition-all duration-300;
+    @apply shadow-lg hover:shadow-neon-red/25 hover:shadow-2xl;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .coin-glow {
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+  }
+
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease-out;
+  }
+
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Enhanced Arena Text Effects */
+  .arena-glow {
+    text-shadow: 
+      0 0 10px rgba(255, 30, 30, 0.8),
+      0 0 20px rgba(255, 30, 30, 0.6),
+      0 0 30px rgba(255, 30, 30, 0.4),
+      0 0 40px rgba(255, 30, 30, 0.2);
+  }
+
+  .gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+  /* Enhanced border utilities */
+  .border-l-3 { border-left-width: 3px; }
+  .border-r-3 { border-right-width: 3px; }
+  .border-t-3 { border-top-width: 3px; }
+  .border-b-3 { border-bottom-width: 3px; }
+  .border-3 { border-width: 3px; }
+}
+
+/* Custom Keyframes for Enhanced Effects */
+@keyframes intense-glow-pulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px rgba(255, 30, 30, 0.8),
+      0 0 20px rgba(255, 30, 30, 0.6),
+      0 0 30px rgba(255, 30, 30, 0.4),
+      0 0 40px rgba(255, 30, 30, 0.2);
+  }
+  50% {
+    text-shadow: 
+      0 0 15px rgba(255, 30, 30, 1),
+      0 0 30px rgba(255, 30, 30, 0.8),
+      0 0 45px rgba(255, 30, 30, 0.6),
+      0 0 60px rgba(255, 30, 30, 0.4);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+
+@keyframes epic-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(255, 30, 30, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 30, 30, 0.8));
+  }
+}
+
+.animate-intense-glow-pulse {
+  animation: intense-glow-pulse 4s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-epic-glow {
+  animation: epic-glow 3s ease-in-out infinite;
+}
